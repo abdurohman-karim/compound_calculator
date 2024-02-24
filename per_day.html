@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Compound Calculator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.2/css/bootstrap.min.css' />
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt"
+    crossorigin="anonymous">
+</head>
+
+<body class="bg-dark text-light">
+  <div class="jumbotron bg-dark">
+    <h1 class="text-light text-center"> 
+      Compound Calculator
+    </h1>
+  </div>
+  <div class='container mb-5'>
+    <label for="days" class="text-light">Days</label>
+    <input type="number" id="days" class='form-control bg-dark text-light' placeholder="Total Days">
+    <br>
+    <label for="deposit" class="text-light">Start Deposit (USD)</label>
+    <input type="number" id="deposit" class='form-control bg-dark text-light' placeholder="1000$" >
+    <br>
+    <label for="profit" class="text-light">Profit per/day (%)</label>
+    <input type="number" id="profit" class='form-control bg-dark text-light' placeholder="Percent of Profit">
+    <br>
+    <input type="checkbox" name="redeposit" id="redeposit" value="1" checked class="text-light" />
+    <label for="redeposit" class="text-light">Re-Deposit Every Day</label>
+    <br>
+    <button id='calculate' class='btn btn-primary'>Calculate</button>
+    <hr class="bg-light">
+    <div id="table" class='table-responsive'></div>
+  </div>
+  <footer class="footer bg-secondary py-4 ">
+    <div class="container">
+      <span class="text-light">GMC Community &copy;
+        <span id='yearNow'></span>
+      </span>
+    </div>
+  </footer>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
+  <script>
+    $(() => {
+      let yearNow = (new Date()).getFullYear();
+      $("#yearNow").html(yearNow);
+      $("body").on('click', '#calculate', function (e) {
+        let redeposit = false;
+        if ($("#redeposit").is(":checked")) {
+          redeposit = true;
+        }
+        let profit = parseFloat($("#profit").val());
+        let days = parseInt($("#days").val());
+        let deposit = parseFloat($("#deposit").val());
+        let total = 0;
+        let growth = 0;
+        let string = `<table class='table table-bordered table-striped table-dark'>
+          <thead>
+            <th>Day</th>
+            <th>Initial</th>
+            <th>Deposit</th>
+            <th>Profit</th>
+            <th>Total</th>
+          </thead>
+          <tbody>`;
+        for (let i = 0; i < days; i++) {
+          string += "<tr>";
+          string += `<td>${i + 1}</td>`;
+          string += `<td>$ ${total.toFixed(2)}</td>`; // initial
+          if (i == 0) {
+            total += deposit;
+          }
+          if (redeposit && i > 0) {
+            total += deposit;
+          }
+
+          if (!redeposit && i > 0) {
+            deposit = 0;
+          }
+
+          string += `<td>$ ${deposit.toFixed(2)}</td>`; // deposit
+          growth = total * (profit / 100);
+          string += `<td>$ ${growth.toFixed(2)}</td>`; // profit
+          total += total * (profit / 100);
+          string += "<td>$ " + total.toFixed(2) + "</td></tr>"; // total
+        }
+        string += `</tbody></table>`;
+        $("#table").html(string);
+      })
+    })
+  </script>
+</body>
+
+</html>
