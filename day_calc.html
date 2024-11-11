@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Калькулятор Даты</title>
+    <!-- Подключение Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- import fontawesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+</head>
+
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
+        <div class="mb-6 flex items-center justify-between">
+            <a href="index.html" class="text-gray-600 hover:text-blue-600 text-decoration-none">
+                <i class="fas fa-arrow-left"></i>
+                 Назад
+            </a>
+            <h2 class="text-2xl font-semibold text-center text-blue-600 mb-6">Калькулятор Даты</h2>
+        </div>
+
+        <form class="space-y-4">
+            <div>
+                <label for="days" class="block text-gray-700">Введите количество дней:</label>
+                <input type="number" id="days" placeholder="Например, 10" 
+                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+            </div>
+            <div>
+                <label for="months" class="block text-gray-700">Введите количество месяцев:</label>
+                <input type="number" id="months" placeholder="Например, 3" 
+                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+            </div>
+            <div>
+                <label for="years" class="block text-gray-700">Введите количество лет:</label>
+                <input type="number" id="years" placeholder="Например, 1" 
+                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+            </div>
+            <div>
+                <label for="operation" class="block text-gray-700">Выберите операцию:</label>
+                <select id="operation" 
+                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                    <option value="add">Плюс</option>
+                    <option value="subtract">Минус</option>
+                </select>
+            </div>
+            <div>
+                <button type="button" onclick="calculateDate()" 
+                    class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                    Рассчитать
+                </button>
+            </div>
+        </form>
+
+        <div class="mt-6">
+            <h3 class="text-lg font-semibold text-gray-700">Результат:</h3>
+            <p id="result" class="mt-2 p-3 bg-blue-50 text-blue-700 rounded-md shadow"></p>
+        </div>
+    </div>
+
+    <script>
+        function calculateDate() {
+            const days = parseInt(document.getElementById("days").value) || 0;
+            const months = parseInt(document.getElementById("months").value) || 0;
+            const years = parseInt(document.getElementById("years").value) || 0;
+            const operation = document.getElementById("operation").value;
+
+            let date = new Date();
+
+            if (operation === "add") {
+                date.setDate(date.getDate() + days);
+                date.setMonth(date.getMonth() + months);
+                date.setFullYear(date.getFullYear() + years);
+            } else if (operation === "subtract") {
+                date.setDate(date.getDate() - days);
+                date.setMonth(date.getMonth() - months);
+                date.setFullYear(date.getFullYear() - years);
+            }
+
+            const resultElement = document.getElementById("result");
+            resultElement.textContent = `Дата: ${date.toLocaleDateString()}`;
+        }
+    </script>
+</body>
+</html>
